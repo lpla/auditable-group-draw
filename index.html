@@ -9,6 +9,10 @@
 </head>
 <body>
   <header>
+    <div class="product-meta">
+      <span class="version-badge">v0.2.0</span>
+      <a href="https://github.com/lpla/auditable-group-draw">Código fuente</a>
+    </div>
     <h1>Sorteo auditable de grupos</h1>
     <p>
       Reparte personas entre dos turnos respetando turnos obligatorios, grupos que deben permanecer juntos y personas que deben quedar separadas.
@@ -22,7 +26,7 @@
       <div class="grid">
         <div>
           <label for="names">Participantes, una persona por línea</label>
-          <textarea id="names" spellcheck="false">Ana
+          <textarea id="names" maxlength="5000" spellcheck="false">Ana
 Bruno
 Carla
 Diego
@@ -34,33 +38,34 @@ Irene
 Javi
 Laura
 Marcos</textarea>
-          <p class="help">El orden queda incorporado a la huella de auditoría. Si se cambia el orden, cambia la configuración.</p>
+          <p class="help">El orden queda incorporado a la huella de auditoría. Si se cambia el orden, cambia la configuración. Los caracteres <span class="kbd">+</span>, coma, punto y coma y barra vertical están reservados como separadores de restricciones y no pueden formar parte de un nombre.</p>
         </div>
         <div>
           <div class="row">
             <div class="field">
               <label for="turn1Name">Nombre del turno 1</label>
-              <input id="turn1Name" value="Turno 1" />
+              <input id="turn1Name" value="Turno 1" maxlength="100" />
             </div>
             <div class="field">
               <label for="turn2Name">Nombre del turno 2</label>
-              <input id="turn2Name" value="Turno 2" />
+              <input id="turn2Name" value="Turno 2" maxlength="100" />
             </div>
             <div class="field">
               <label for="cap1">Máximo turno 1</label>
-              <input id="cap1" type="number" min="0" max="20" value="6" />
+              <input id="cap1" type="number" min="0" max="20" step="1" inputmode="numeric" value="6" />
             </div>
             <div class="field">
               <label for="cap2">Máximo turno 2</label>
-              <input id="cap2" type="number" min="0" max="20" value="6" />
+              <input id="cap2" type="number" min="0" max="20" step="1" inputmode="numeric" value="6" />
             </div>
           </div>
+          <p class="help">Las capacidades son máximos, no objetivos de equilibrio. La herramienta selecciona uniformemente entre repartos completos válidos; con restricciones, una persona concreta no tiene por qué tener una probabilidad 50/50 de cada turno.</p>
           <p class="help">Primero pulsa “Preparar restricciones” para crear la tabla de turnos obligatorios.</p>
           <div class="row">
             <button id="prepareBtn">Preparar restricciones</button>
             <button class="secondary" id="exampleBtn">Cargar ejemplo limpio</button>
           </div>
-          <div id="prepareStatus" class="status"></div>
+          <div id="prepareStatus" class="status" role="status" aria-live="polite" aria-atomic="true"></div>
         </div>
       </div>
     </section>
@@ -75,13 +80,13 @@ Marcos</textarea>
       <div class="card">
         <h2>3 · Restricciones de grupo</h2>
         <label for="together">Deben ir juntas/os</label>
-        <textarea id="together" spellcheck="false" placeholder="Ejemplo:
+        <textarea id="together" maxlength="20000" spellcheck="false" placeholder="Ejemplo:
 Ana + Bruno
 Carla, Diego, Elena"></textarea>
         <p class="help">Una restricción por línea. Puedes separar nombres con <span class="kbd">+</span>, coma, punto y coma o barra vertical.</p>
 
         <label for="apart">No deben coincidir en el mismo turno</label>
-        <textarea id="apart" spellcheck="false" placeholder="Ejemplo:
+        <textarea id="apart" maxlength="20000" spellcheck="false" placeholder="Ejemplo:
 Irene + Javi"></textarea>
         <p class="help">Con solo dos turnos, una línea con tres o más personas aquí es imposible de satisfacer.</p>
       </div>
@@ -96,7 +101,7 @@ Irene + Javi"></textarea>
         <button id="validateBtn">Validar y fijar configuración</button>
         <button class="secondary" id="copyConfigBtn">Copiar configuración normalizada</button>
       </div>
-      <div id="validationStatus" class="status"></div>
+      <div id="validationStatus" class="status" role="status" aria-live="polite" aria-atomic="true"></div>
       <h3>Huella SHA‑256 de la configuración</h3>
       <div id="configHash" class="hashbox">—</div>
     </section>
@@ -104,17 +109,17 @@ Irene + Javi"></textarea>
     <section class="card">
       <h2>5 · Semilla pública y sorteo</h2>
       <p class="help">
-        La semilla solo se habilita después de fijar la configuración. Puede generarse criptográficamente en el navegador o producirse externamente en directo. Para que el sorteo sea impredecible, la semilla debe conocerse después de comprometer la configuración.
+        La semilla solo se habilita después de fijar la configuración. Puede generarse criptográficamente en el navegador o producirse externamente en directo. Para que el sorteo sea impredecible, la semilla debe conocerse después de comprometer la configuración. En una ceremonia pública, una semilla externa generada ante los participantes aporta una evidencia más observable que la entropía interna del navegador.
       </p>
       <div class="row">
         <div class="field seed-field">
           <label for="seed">Semilla pública</label>
-          <input id="seed" placeholder="Primero fija la configuración" disabled />
+          <input id="seed" maxlength="4096" placeholder="Primero fija la configuración" disabled />
         </div>
         <button class="secondary" id="randomSeedBtn">Generar semilla criptográfica</button>
         <button id="drawBtn">Realizar sorteo</button>
       </div>
-      <div id="drawStatus" class="status"></div>
+      <div id="drawStatus" class="status" role="status" aria-live="polite" aria-atomic="true"></div>
       <div id="result" class="result-grid hidden">
         <div class="turn">
           <h3 id="resTurn1">Turno 1</h3>
@@ -129,18 +134,19 @@ Irene + Javi"></textarea>
 
     <section class="card">
       <h2>6 · Acta de auditoría</h2>
-      <p class="help">
-        Guarda o copia esta acta junto con el vídeo. Cualquier persona puede abrir este mismo archivo, introducir los mismos datos y verificar el resultado.
+      <p class="help" id="auditHelp">
+        Guarda o copia esta acta junto con el vídeo. El JSON puede verificarse de forma independiente con el verificador incluido en el repositorio.
       </p>
       <div class="row">
         <button class="secondary" id="copyAuditBtn">Copiar acta</button>
         <button class="secondary" id="downloadAuditBtn">Descargar acta .txt</button>
         <button class="secondary" id="downloadJsonBtn">Descargar auditoría .json</button>
       </div>
-      <textarea id="audit" class="audit" readonly>El acta aparecerá aquí tras realizar el sorteo.</textarea>
+      <label for="audit" class="audit-label">Acta completa del sorteo</label>
+      <textarea id="audit" class="audit" aria-describedby="auditHelp" readonly>El acta aparecerá aquí tras realizar el sorteo.</textarea>
     </section>
 
-    <p class="footer-note">Aplicación local y autocontenida: no realiza conexiones de red ni usa librerías externas.</p>
+    <p class="footer-note">El sorteo y los datos introducidos se procesan íntegramente en tu navegador y no se envían por red. La versión descargable es un único archivo autocontenido. <a href="https://github.com/lpla/auditable-group-draw">Auditable Group Draw v0.2.0</a>.</p>
   </main>
 
   <script src="app.js"></script>
