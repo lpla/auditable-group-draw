@@ -1,0 +1,143 @@
+{
+  "auditSchemaVersion": "1",
+  "app": "auditable-group-draw",
+  "appVersion": "0.2.0",
+  "sourceRepository": "https://github.com/lpla/auditable-group-draw",
+  "localDateTime": "2000-01-01 00:00:00",
+  "utcDateTime": "2000-01-01T00:00:00.000Z",
+  "method": "enumerate-valid-assignments-sha256-seed-v1",
+  "config": {
+    "schemaVersion": "2",
+    "algorithm": "enumerate-valid-assignments-sha256-seed-v1",
+    "names": [
+      "Ana",
+      "Bruno",
+      "Carla",
+      "Diego",
+      "Elena",
+      "Fran",
+      "Gema",
+      "Hugo",
+      "Irene",
+      "Javi",
+      "Laura",
+      "Marcos"
+    ],
+    "turnNames": [
+      "Turno 1",
+      "Turno 2"
+    ],
+    "capacities": [
+      6,
+      6
+    ],
+    "fixed": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "together": [],
+    "apart": []
+  },
+  "normalizedConfig": "{\"algorithm\":\"enumerate-valid-assignments-sha256-seed-v1\",\"apart\":[],\"capacities\":[6,6],\"fixed\":[null,null,null,null,null,null,null,null,null,null,null,null],\"names\":[\"Ana\",\"Bruno\",\"Carla\",\"Diego\",\"Elena\",\"Fran\",\"Gema\",\"Hugo\",\"Irene\",\"Javi\",\"Laura\",\"Marcos\"],\"schemaVersion\":\"2\",\"together\":[],\"turnNames\":[\"Turno 1\",\"Turno 2\"]}",
+  "configHash": "e553af800b2740338adb1377659dbecf0e36744c78baa2f024a462a8e68fa347",
+  "seed": "test-seed",
+  "validCount": 924,
+  "selectedIndex0": 414,
+  "selectedIndex1": 415,
+  "selectedMaskInteger": 1818,
+  "selectedMaskBinary": "011100011010",
+  "participantBits": [
+    {
+      "position": 0,
+      "name": "Ana",
+      "bit": 0
+    },
+    {
+      "position": 1,
+      "name": "Bruno",
+      "bit": 1
+    },
+    {
+      "position": 2,
+      "name": "Carla",
+      "bit": 0
+    },
+    {
+      "position": 3,
+      "name": "Diego",
+      "bit": 1
+    },
+    {
+      "position": 4,
+      "name": "Elena",
+      "bit": 1
+    },
+    {
+      "position": 5,
+      "name": "Fran",
+      "bit": 0
+    },
+    {
+      "position": 6,
+      "name": "Gema",
+      "bit": 0
+    },
+    {
+      "position": 7,
+      "name": "Hugo",
+      "bit": 0
+    },
+    {
+      "position": 8,
+      "name": "Irene",
+      "bit": 1
+    },
+    {
+      "position": 9,
+      "name": "Javi",
+      "bit": 1
+    },
+    {
+      "position": 10,
+      "name": "Laura",
+      "bit": 1
+    },
+    {
+      "position": 11,
+      "name": "Marcos",
+      "bit": 0
+    }
+  ],
+  "counter": 0,
+  "hashMaterial": "e553af800b2740338adb1377659dbecf0e36744c78baa2f024a462a8e68fa347|test-seed|0",
+  "selectionDigest": "a3490803162e29be1b0ecf647a413c3cb4dc03cd95b977c558b8fdbcf480d592",
+  "rejectionLimitHex": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffca8",
+  "assignment": [
+    [
+      "Bruno",
+      "Diego",
+      "Elena",
+      "Irene",
+      "Javi",
+      "Laura"
+    ],
+    [
+      "Ana",
+      "Carla",
+      "Fran",
+      "Gema",
+      "Hugo",
+      "Marcos"
+    ]
+  ]
+}
