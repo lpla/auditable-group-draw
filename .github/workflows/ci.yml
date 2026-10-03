@@ -11,15 +11,29 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: '3.13'
-      - name: Run verifier tests
+      - name: Run independent verifier tests
         run: python3 -m unittest discover -s tests -v
-      - name: Verify reference audit
-        run: python3 verifier.py tests/fixtures/test-vector-v0.2.0.json
-      - name: Build standalone application
-        run: python3 build_standalone.py
+      - name: Run JavaScript core tests
+        run: node tests/test_core.js
+      - name: Verify reference audits independently
+        run: |
+          python3 verifier.py tests/fixtures/test-vector-v0.2.0.json
+          python3 verifier.py tests/fixtures/test-vector-restricted-v0.2.0.json
       - name: Check JavaScript syntax
         run: node --check app.js
+      - name: Build reproducible standalone application
+        run: |
+          python3 build_standalone.py
+          cp dist/auditable-group-draw.html /tmp/auditable-group-draw-first.html
+          python3 build_standalone.py
+          cmp /tmp/auditable-group-draw-first.html dist/auditable-group-draw.html
+          if grep -q "'unsafe-inline'" dist/auditable-group-draw.html; then
+            echo "Standalone CSP must not contain unsafe-inline" >&2
+            exit 1
+          fi
+          grep -q "script-src 'sha256-" dist/auditable-group-draw.html
+          grep -q "style-src 'sha256-" dist/auditable-group-draw.html

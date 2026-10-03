@@ -1,0 +1,122 @@
+{
+  "auditSchemaVersion": "2",
+  "app": "auditable-group-draw",
+  "appVersion": "0.2.0",
+  "sourceRepository": "https://github.com/lpla/auditable-group-draw",
+  "sourceVersion": "v0.2.0",
+  "localDateTime": "4/10/2026, 0:00:00",
+  "utcDateTime": "2026-10-03T22:00:01.000Z",
+  "method": "enumerate-valid-assignments-sha256-seed-v1",
+  "config": {
+    "schemaVersion": "2",
+    "algorithm": "enumerate-valid-assignments-sha256-seed-v1",
+    "names": [
+      "Álvaro",
+      "Berta",
+      "Chloé",
+      "Dani",
+      "Eli",
+      "Fátima",
+      "Gus",
+      "Hana"
+    ],
+    "turnNames": [
+      "Mañana",
+      "Tarde"
+    ],
+    "capacities": [
+      5,
+      4
+    ],
+    "fixed": [
+      "T1",
+      null,
+      null,
+      null,
+      null,
+      "T2",
+      null,
+      null
+    ],
+    "together": [
+      [
+        1,
+        2
+      ]
+    ],
+    "apart": [
+      [
+        3,
+        4
+      ]
+    ]
+  },
+  "normalizedConfig": "{\"algorithm\":\"enumerate-valid-assignments-sha256-seed-v1\",\"apart\":[[3,4]],\"capacities\":[5,4],\"fixed\":[\"T1\",null,null,null,null,\"T2\",null,null],\"names\":[\"Álvaro\",\"Berta\",\"Chloé\",\"Dani\",\"Eli\",\"Fátima\",\"Gus\",\"Hana\"],\"schemaVersion\":\"2\",\"together\":[[1,2]],\"turnNames\":[\"Mañana\",\"Tarde\"]}",
+  "configHash": "dca0a7cc447e9631a9720b7f774ee90295d7356d568a46a09fd9efe4fdc00ab4",
+  "seed": "semilla-pública-2026",
+  "validCount": 8,
+  "selectedIndex0": 3,
+  "selectedIndex1": 4,
+  "selectedMaskInteger": 87,
+  "selectedMaskBinary": "01010111",
+  "participantBits": [
+    {
+      "position": 0,
+      "name": "Álvaro",
+      "bit": 1
+    },
+    {
+      "position": 1,
+      "name": "Berta",
+      "bit": 1
+    },
+    {
+      "position": 2,
+      "name": "Chloé",
+      "bit": 1
+    },
+    {
+      "position": 3,
+      "name": "Dani",
+      "bit": 0
+    },
+    {
+      "position": 4,
+      "name": "Eli",
+      "bit": 1
+    },
+    {
+      "position": 5,
+      "name": "Fátima",
+      "bit": 0
+    },
+    {
+      "position": 6,
+      "name": "Gus",
+      "bit": 1
+    },
+    {
+      "position": 7,
+      "name": "Hana",
+      "bit": 0
+    }
+  ],
+  "counter": 0,
+  "hashMaterial": "dca0a7cc447e9631a9720b7f774ee90295d7356d568a46a09fd9efe4fdc00ab4|semilla-pública-2026|0",
+  "selectionDigest": "7d6c05cc247c2f8a2fb17f60a82af699de5140f98f237d87b32e8e32cb5cb2d3",
+  "rejectionLimitHex": "0x10000000000000000000000000000000000000000000000000000000000000000",
+  "assignment": [
+    [
+      "Álvaro",
+      "Berta",
+      "Chloé",
+      "Eli",
+      "Gus"
+    ],
+    [
+      "Dani",
+      "Fátima",
+      "Hana"
+    ]
+  ]
+}
