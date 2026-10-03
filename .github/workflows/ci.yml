@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Run verifier tests
+        run: python3 -m unittest discover -s tests -v
+      - name: Verify reference audit
+        run: python3 verifier.py tests/fixtures/test-vector-v0.2.0.json
+      - name: Build standalone application
+        run: python3 build_standalone.py
+      - name: Check JavaScript syntax
+        run: node --check app.js

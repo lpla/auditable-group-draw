@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'none'; font-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'" />
+  <title>Sorteo auditable de grupos</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Sorteo auditable de grupos</h1>
+    <p>
+      Reparte personas entre dos turnos respetando turnos obligatorios, grupos que deben permanecer juntos y personas que deben quedar separadas.
+      El programa enumera todos los repartos válidos y selecciona uno uniformemente a partir de una configuración comprometida, una semilla pública y SHA‑256.
+    </p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>1 · Participantes y turnos</h2>
+      <div class="grid">
+        <div>
+          <label for="names">Participantes, una persona por línea</label>
+          <textarea id="names" spellcheck="false">Ana
+Bruno
+Carla
+Diego
+Elena
+Fran
+Gema
+Hugo
+Irene
+Javi
+Laura
+Marcos</textarea>
+          <p class="help">El orden queda incorporado a la huella de auditoría. Si se cambia el orden, cambia la configuración.</p>
+        </div>
+        <div>
+          <div class="row">
+            <div class="field">
+              <label for="turn1Name">Nombre del turno 1</label>
+              <input id="turn1Name" value="Turno 1" />
+            </div>
+            <div class="field">
+              <label for="turn2Name">Nombre del turno 2</label>
+              <input id="turn2Name" value="Turno 2" />
+            </div>
+            <div class="field">
+              <label for="cap1">Máximo turno 1</label>
+              <input id="cap1" type="number" min="0" max="20" value="6" />
+            </div>
+            <div class="field">
+              <label for="cap2">Máximo turno 2</label>
+              <input id="cap2" type="number" min="0" max="20" value="6" />
+            </div>
+          </div>
+          <p class="help">Primero pulsa “Preparar restricciones” para crear la tabla de turnos obligatorios.</p>
+          <div class="row">
+            <button id="prepareBtn">Preparar restricciones</button>
+            <button class="secondary" id="exampleBtn">Cargar ejemplo limpio</button>
+          </div>
+          <div id="prepareStatus" class="status"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>2 · Restricciones individuales</h2>
+        <p class="help">Marca aquí a quien tenga que ir necesariamente a un turno concreto.</p>
+        <div id="fixedContainer" class="status warn">Pulsa “Preparar restricciones”.</div>
+      </div>
+
+      <div class="card">
+        <h2>3 · Restricciones de grupo</h2>
+        <label for="together">Deben ir juntas/os</label>
+        <textarea id="together" spellcheck="false" placeholder="Ejemplo:
+Ana + Bruno
+Carla, Diego, Elena"></textarea>
+        <p class="help">Una restricción por línea. Puedes separar nombres con <span class="kbd">+</span>, coma, punto y coma o barra vertical.</p>
+
+        <label for="apart">No deben coincidir en el mismo turno</label>
+        <textarea id="apart" spellcheck="false" placeholder="Ejemplo:
+Irene + Javi"></textarea>
+        <p class="help">Con solo dos turnos, una línea con tres o más personas aquí es imposible de satisfacer.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>4 · Comprobación y huella de configuración</h2>
+      <p class="help">
+        Valida y fija primero la configuración. La aplicación calcula su huella SHA‑256 y, desde ese momento, habilita la semilla. Si se modifica cualquier dato o restricción, la huella, la semilla y cualquier resultado anterior quedan invalidados.
+      </p>
+      <div class="row">
+        <button id="validateBtn">Validar y fijar configuración</button>
+        <button class="secondary" id="copyConfigBtn">Copiar configuración normalizada</button>
+      </div>
+      <div id="validationStatus" class="status"></div>
+      <h3>Huella SHA‑256 de la configuración</h3>
+      <div id="configHash" class="hashbox">—</div>
+    </section>
+
+    <section class="card">
+      <h2>5 · Semilla pública y sorteo</h2>
+      <p class="help">
+        La semilla solo se habilita después de fijar la configuración. Puede generarse criptográficamente en el navegador o producirse externamente en directo. Para que el sorteo sea impredecible, la semilla debe conocerse después de comprometer la configuración.
+      </p>
+      <div class="row">
+        <div class="field seed-field">
+          <label for="seed">Semilla pública</label>
+          <input id="seed" placeholder="Primero fija la configuración" disabled />
+        </div>
+        <button class="secondary" id="randomSeedBtn">Generar semilla criptográfica</button>
+        <button id="drawBtn">Realizar sorteo</button>
+      </div>
+      <div id="drawStatus" class="status"></div>
+      <div id="result" class="result-grid hidden">
+        <div class="turn">
+          <h3 id="resTurn1">Turno 1</h3>
+          <ol id="listTurn1"></ol>
+        </div>
+        <div class="turn">
+          <h3 id="resTurn2">Turno 2</h3>
+          <ol id="listTurn2"></ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>6 · Acta de auditoría</h2>
+      <p class="help">
+        Guarda o copia esta acta junto con el vídeo. Cualquier persona puede abrir este mismo archivo, introducir los mismos datos y verificar el resultado.
+      </p>
+      <div class="row">
+        <button class="secondary" id="copyAuditBtn">Copiar acta</button>
+        <button class="secondary" id="downloadAuditBtn">Descargar acta .txt</button>
+        <button class="secondary" id="downloadJsonBtn">Descargar auditoría .json</button>
+      </div>
+      <textarea id="audit" class="audit" readonly>El acta aparecerá aquí tras realizar el sorteo.</textarea>
+    </section>
+
+    <p class="footer-note">Aplicación local y autocontenida: no realiza conexiones de red ni usa librerías externas.</p>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
